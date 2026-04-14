@@ -105,8 +105,8 @@
                                 <label class="block text-sm font-medium text-slate-200">Status</label>
                                 <select id="status" required class="mt-1 block w-full border border-slate-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 bg-slate-900 text-white">
                                     <option value="" disabled selected>Selecione o status</option>
-                                    <option value="ATIVO">ATIVO</option>
-                                    <option value="BLOQUEADO">BLOQUEADO</option>
+                                    <option value="ativo">Ativo</option>
+                                    <option value="bloqueado">Bloqueado</option>
                                 </select>
                             </div>
 
@@ -122,10 +122,10 @@
                     </div>
                 </div>
 
-                <!-- Lista de Charadas -->
-                <!-- ⚛️ REACT COMPONENT CANDIDATE: <CharadaList charadas={charadasData} /> ou <CharadasTable /> -->
+                <!-- Lista de Alunos -->
+                <!-- ⚛️ REACT COMPONENT CANDIDATE: <AlunosList alunos={alunosData} /> ou <AlunosTable /> -->
                 <div class="w-full lg:w-2/3">
-                    <div class="bg-slate-800 rounded-xl shadow-sm border border-slate-700 overflow-hidden">
+                    <div class="bg-slate-800 rounded-xl shadow-sm border border-slate-800 overflow-hidden">
                         <div class="p-6 border-b border-slate-700 flex justify-between items-center bg-slate-900">
                             <h3 class="text-lg font-bold text-white">Gerenciar Alunos</h3>
                             <button onclick="carregarAlunos()" class="text-orange-300 hover:text-orange-400 text-sm font-medium">
@@ -145,7 +145,7 @@
                                         <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">Ações</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tabelaCharadas" class="bg-slate-900 divide-y divide-slate-700">
+                                <tbody id="tabelaAlunos" class="bg-slate-900 divide-y divide-slate-700">
                                     <!-- Os dados serão injetados aqui via JavaScript -->
                                     <!-- ⚛️ RENDERIZAÇÃO DE LISTA: No React, faríamos um .map() no array de charadas para renderizar os itens: 
                                          {charadas.map(charada => <CharadaRow key={charada.id} data={charada} />)} -->

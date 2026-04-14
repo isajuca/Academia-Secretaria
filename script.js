@@ -2,7 +2,7 @@
 
 // 🎯 [PASSO 1: Lacuna de Rota Base]
 // A URL onde nossa aplicação backend está sendo executada (ex: link da Vercel).
-const API_BASE_URL = '--- COLOQUE AQUI O LINK DA SUA API ---'; 
+const API_BASE_URL = 'https://backup-weld.vercel.app'; 
 
 // ==========================================
 // REFERÊNCIAS DO DOM
@@ -15,8 +15,8 @@ const userInfo = document.getElementById('userInfo');
 const loginError = document.getElementById('loginError');
 
 const charadaForm = document.getElementById('charadaForm');
-const tabelaAlunos = document.getElementById('tabelaCharadas');
-const totalAlunosEl = document.getElementById('totalCharadas');
+const tabelaAlunos = document.getElementById('tabelaAlunos');
+const totalAlunosEl = document.getElementById('totalAlunos');
 const btnCancelar = document.getElementById('btnCancelar');
 const formTitle = document.getElementById('formTitle');
 
@@ -61,9 +61,11 @@ loginForm.addEventListener('submit', async (e) => {
         });
 
         const dados = await resposta.json();
+        console.log('Resposta do login:', resposta.status, dados);
 
         if (resposta.ok && dados.token) {
             tokenAtual = dados.token;
+            console.log('Token definido:', tokenAtual);
             localStorage.setItem('adminToken', tokenAtual);
             loginForm.reset();
             mostrarPainelAdmin();
@@ -88,12 +90,11 @@ btnLogout.addEventListener('click', () => {
 
 
 // ==========================================
-// 2. CRUD: READ (Carregar lista de charadas)
+// 2. CRUD: READ (Carregar lista de alunos)
 // ==========================================
 async function carregarAlunos() {
     try {
-        // 🎯 [PASSO 4: Lacuna da Rota Privada]
-        // Substitua pelo endpoint principal que recupera os dados na API
+        console.log('Token atual:', tokenAtual);
         const resposta = await fetch(`${API_BASE_URL}/alunos`, {
             method: 'GET',
             headers: {
@@ -102,6 +103,9 @@ async function carregarAlunos() {
             }
         });
 
+        console.log('Status da resposta:', resposta.status);
+        console.log('Headers da resposta:', resposta.headers);
+
         if (resposta.status === 401 || resposta.status === 403) {
             alert("Sua sessão expirou ou token inválido.");
             btnLogout.click();
@@ -109,11 +113,12 @@ async function carregarAlunos() {
         }
 
         if (resposta.ok) {
-            alunos = await resposta.json(); 
-            renderizarTabela(); 
+            alunos = await resposta.json();
+            console.log('Alunos carregados:', alunos);
+            renderizarTabela();
         } else {
             const erroJson = await resposta.text();
-            console.error("Falha ao buscar as charadas:", resposta.status, resposta.statusText, erroJson);
+            console.error("Falha ao buscar os alunos:", resposta.status, resposta.statusText, erroJson);
         }
     } catch (erro) {
         console.error("Erro:", erro);
@@ -137,6 +142,13 @@ function renderizarTabela() {
     totalAlunosEl.textContent = alunos.length;
 
     alunos.forEach(aluno => {
+        console.log('Renderizando aluno:', aluno);
+        console.log('Data de cadastro raw:', aluno.dataCadastro, aluno.data_cadastro, aluno.createdAt, aluno.created_at);
+        console.log('id do aluno:', aluno.id);
+        console.log('nome do aluno:', aluno.nome);
+        console.log('cpf do aluno:', aluno.cpf);
+        console.log('status do aluno:', aluno.status);
+
         const dataCadastro = aluno.dataCadastro || aluno.data_cadastro || aluno.createdAt || aluno.created_at || '';
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -165,26 +177,32 @@ charadaForm.addEventListener('submit', async (e) => {
     const cpf = document.getElementById('cpf').value;
     const status = document.getElementById('status').value;
 
-    const alunoData = { nome, cpf, status };
+    const alunoData = { nome: nome, cpf: cpf, status: status };
+    console.log('Dados do aluno a enviar:', alunoData);
 
     try {
         let url = `${API_BASE_URL}/alunos`;
-        let metodoHTTP = 'POST'; 
+        let metodoHTTP = 'POST';
 
         if (id) {
             url = `${API_BASE_URL}/alunos/${id}`;
-            metodoHTTP = 'PUT'; 
+            metodoHTTP = 'PUT';
         }
+
+        console.log('URL:', url, 'Método:', metodoHTTP, 'Token:', tokenAtual);
 
         const respostaApi = await fetch(url, {
             method: metodoHTTP,
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${tokenAtual}` 
+                'Authorization': `Bearer ${tokenAtual}`
             },
             body: JSON.stringify(alunoData)
         });
+
+        console.log('Status da resposta API:', respostaApi.status);
+        console.log('Headers da resposta API:', respostaApi.headers);
 
         if (respostaApi.status === 401 || respostaApi.status === 403) {
             alert("Sua sessão expirou ou token inválido.");
@@ -193,13 +211,15 @@ charadaForm.addEventListener('submit', async (e) => {
         }
 
         if (respostaApi.ok) {
+            const dadosResposta = await respostaApi.json();
+            console.log('Resposta de sucesso:', dadosResposta);
             alert(id ? "Aluno atualizado!" : "Aluno criado com sucesso!");
             limparFormulario();
-            carregarAlunos(); 
+            carregarAlunos();
         } else {
             const erroJson = await respostaApi.text();
             console.error("Erro ao salvar aluno:", respostaApi.status, respostaApi.statusText, erroJson);
-            alert("Falha ao salvar o aluno. Status: " + respostaApi.status);
+            alert("Falha ao salvar o aluno. Status: " + respostaApi.status + ". Detalhes: " + erroJson);
         }
     } catch (erro) {
         console.error("Erro:", erro);
