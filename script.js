@@ -120,16 +120,31 @@ async function carregarAlunos() {
     }
 }
 
+function formatarDataCadastro(data) {
+    if (!data) return '';
+    const valor = typeof data === 'string' ? data : data.toString();
+    const possivelData = new Date(valor);
+    if (Number.isNaN(possivelData.getTime())) return valor;
+    return possivelData.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+}
+
 function renderizarTabela() {
     tabelaAlunos.innerHTML = ''; 
     totalAlunosEl.textContent = alunos.length;
 
     alunos.forEach(aluno => {
+        const dataCadastro = aluno.dataCadastro || aluno.data_cadastro || aluno.createdAt || aluno.created_at || '';
         const tr = document.createElement('tr');
         tr.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">${aluno.id || ''}</td>
             <td class="px-6 py-4 whitespace-normal text-sm text-gray-800">${aluno.nome}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">${aluno.cpf}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${aluno.status}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${formatarDataCadastro(dataCadastro)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button onclick="editarAluno('${aluno.id}')" class="text-indigo-600 hover:text-indigo-900 mr-3">Editar</button>
                 <button onclick="deletarAluno('${aluno.id}')" class="text-red-600 hover:text-red-900">Excluir</button>
