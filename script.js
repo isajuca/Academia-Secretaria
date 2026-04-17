@@ -14,7 +14,7 @@ const btnLogout = document.getElementById('btnLogout');
 const userInfo = document.getElementById('userInfo');
 const loginError = document.getElementById('loginError');
 
-const charadaForm = document.getElementById('charadaForm');
+const alunoForm = document.getElementById('alunoForm');
 const tabelaAlunos = document.getElementById('tabelaAlunos');
 const totalAlunosEl = document.getElementById('totalAlunos');
 const btnCancelar = document.getElementById('btnCancelar');
@@ -144,22 +144,23 @@ function renderizarTabela() {
     alunos.forEach(aluno => {
         console.log('Renderizando aluno:', aluno);
         console.log('Data de cadastro raw:', aluno.dataCadastro, aluno.data_cadastro, aluno.createdAt, aluno.created_at);
-        console.log('id do aluno:', aluno.id);
+        console.log('id do aluno:', aluno.id || aluno._id);
         console.log('nome do aluno:', aluno.nome);
         console.log('cpf do aluno:', aluno.cpf);
         console.log('status do aluno:', aluno.status);
 
+        const alunoId = aluno.id || aluno._id || '';
         const dataCadastro = aluno.dataCadastro || aluno.data_cadastro || aluno.createdAt || aluno.created_at || '';
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">${aluno.id || ''}</td>
-            <td class="px-6 py-4 whitespace-normal text-sm text-gray-800">${aluno.nome}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">${aluno.cpf}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${aluno.status}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${formatarDataCadastro(dataCadastro)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-200 font-medium">${alunoId}</td>
+            <td class="px-6 py-4 whitespace-normal text-sm text-slate-200">${aluno.nome}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-300 font-medium">${aluno.cpf}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-300">${aluno.status}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-300">${formatarDataCadastro(dataCadastro)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button onclick="editarAluno('${aluno.id}')" class="text-indigo-600 hover:text-indigo-900 mr-3">Editar</button>
-                <button onclick="deletarAluno('${aluno.id}')" class="text-red-600 hover:text-red-900">Excluir</button>
+                <button onclick="editarAluno('${alunoId}')" class="text-indigo-600 hover:text-indigo-900 mr-3">Editar</button>
+                <button onclick="deletarAluno('${aluno.cpf}')" class="text-red-600 hover:text-red-900">Excluir</button>
             </td>
         `;
         tabelaAlunos.appendChild(tr);
@@ -169,10 +170,10 @@ function renderizarTabela() {
 // ==========================================
 // 3. CRUD: CREATE e UPDATE
 // ==========================================
-charadaForm.addEventListener('submit', async (e) => {
+alunoForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const id = document.getElementById('charadaId').value;
+    const id = document.getElementById('alunoId').value;
     const nome = document.getElementById('nome').value;
     const cpf = document.getElementById('cpf').value;
     const status = document.getElementById('status').value;
@@ -185,7 +186,8 @@ charadaForm.addEventListener('submit', async (e) => {
         let metodoHTTP = 'POST';
 
         if (id) {
-            url = `${API_BASE_URL}/alunos/${id}`;
+            url = `${API_BASE_URL}/alunos/${cpf}`;
+            console.log('ID presente, atualizando aluno com CPF:', id, 'URL de destino:', url);
             metodoHTTP = 'PUT';
         }
 
@@ -227,10 +229,12 @@ charadaForm.addEventListener('submit', async (e) => {
 });
 
 function editarAluno(id) {
-    const aluno = alunos.find(c => String(c.id) === String(id)); 
+    const aluno = alunos.find(c => String(c.id || c._id) === String(id));
+    console.log('Aluno encontrado para edição:', aluno);
     
     if (aluno) {
-        document.getElementById('charadaId').value = aluno.id;
+        const alunoId = aluno.id || aluno._id || '';
+        document.getElementById('alunoId').value = alunoId;
         document.getElementById('nome').value = aluno.nome;
         document.getElementById('cpf').value = aluno.cpf;
         document.getElementById('status').value = aluno.status;
@@ -243,8 +247,8 @@ function editarAluno(id) {
 btnCancelar.addEventListener('click', limparFormulario);
 
 function limparFormulario() {
-    charadaForm.reset();
-    document.getElementById('charadaId').value = '';
+    alunoForm.reset(); // Use alunoForm aqui
+    document.getElementById('alunoId').value = '';
     formTitle.textContent = "Novo Aluno";
     btnCancelar.classList.add('hidden');
 }
@@ -253,11 +257,11 @@ function limparFormulario() {
 // ==========================================
 // 4. CRUD: DELETE
 // ==========================================
-async function deletarAluno(id) {
+async function deletarAluno(cpf) {
     if (!confirm("Tem certeza que deseja excluir este aluno?")) return;
 
     try {
-        const resposta = await fetch(`${API_BASE_URL}/alunos/${id}`, {
+        const resposta = await fetch(`${API_BASE_URL}/alunos/${cpf}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',

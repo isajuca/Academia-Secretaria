@@ -66,7 +66,7 @@
         <div id="adminSection" class="hidden space-y-8">
             
             <!-- Cards de Resumo -->
-            <!-- ⚛️ REACT COMPONENT CANDIDATE: <SummaryCard title="Total de Charadas" value={totalCharadas} icon="fa-list" /> -->
+            <!-- ⚛️ REACT COMPONENT CANDIDATE: <SummaryCard title="Total de Alunos" value={totalAlunos} icon="fa-list" /> -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 ">
                 <div class="bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-700 flex items-center">
                     <div class="p-3 rounded-full bg-orange-100 text-orange-600 mr-4">
@@ -81,15 +81,15 @@
 
             <div class="flex flex-col lg:flex-row gap-8">
                 
-                <!-- Formulário para Criar/Editar Charadas -->
-                <!-- ⚛️ REACT COMPONENT CANDIDATE: <CharadaForm onSubmit={handleSaveCharada} /> -->
+                <!-- Formulário para Criar/Editar Alunos -->
+                <!-- ⚛️ REACT COMPONENT CANDIDATE: <AlunoForm onSubmit={handleSaveAluno} /> -->
                 <div class="w-full lg:w-1/3">
                     <div class="bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-700 sticky top-6">
                         <h3 id="formTitle" class="text-lg font-bold text-white mb-6 border-b border-slate-700 pb-2">Novo Aluno</h3>
                         
-                        <form id="charadaForm" class="space-y-4">
+                        <form id="alunoForm" class="space-y-4">
                             <!-- Input escondido para armazenar o ID quando estiver editando -->
-                            <input type="hidden" id="charadaId">
+                            <input type="hidden" id="alunoId">
                             
                             <div>
                                 <label class="block text-sm font-medium text-slate-200">Nome</label>
@@ -137,18 +137,18 @@
                             <table class="min-w-full divide-y divide-slate-700">
                                 <thead class="bg-slate-900">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">ID</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Nome</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">CPF</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Status</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Data de Cadastro</th>
-                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">Ações</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Nome</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">CPF</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Data de Cadastro</th>
+                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tabelaAlunos" class="bg-slate-900 divide-y divide-slate-700">
                                     <!-- Os dados serão injetados aqui via JavaScript -->
-                                    <!-- ⚛️ RENDERIZAÇÃO DE LISTA: No React, faríamos um .map() no array de charadas para renderizar os itens: 
-                                         {charadas.map(charada => <CharadaRow key={charada.id} data={charada} />)} -->
+                                    <!-- ⚛️ RENDERIZAÇÃO DE LISTA: No React, faríamos um .map() no array de alunos para renderizar os itens: 
+                                         {alunos.map(aluno => <AlunoRow key={aluno.id} data={aluno} />)} -->
                                 </tbody>
                             </table>
                         </div>
@@ -158,6 +158,9 @@
             </div>
         </div>
     </div>
+    <footer class="text-center text-gray-500 text-sm mt-4 pb-4">
+        Feito por Isa e Rebeca
+    </footer>
 
     <!-- Script principal -->
     <script src="script.js"></script>
