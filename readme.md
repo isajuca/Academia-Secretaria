@@ -79,9 +79,5 @@ const API_BASE_URL = 'https://backup-weld.vercel.app';
 
 ## 👥 Autores
 
-- **SENAI DS 2026** - Isa e Rebeca
-
-
----
-
-*Projeto desenvolvido como parte do 1º semestre 2026 - Projeto Academia Interdisciplinar*
+Desenvolvido por **Isa Jucá** – sinta-se à vontade para entrar em contato!
+isadora.juca.senai@gmail.com
