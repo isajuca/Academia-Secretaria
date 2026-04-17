@@ -178,6 +178,13 @@ alunoForm.addEventListener('submit', async (e) => {
     const cpf = document.getElementById('cpf').value;
     const status = document.getElementById('status').value;
 
+    // Validação: CPF deve ter exatamente 11 números
+    const cpfApenasNumeros = cpf.replace(/\D/g, '');
+    if (cpfApenasNumeros.length !== 11) {
+        alert('Erro: O CPF deve ter exatamente 11 números (sem pontos ou hífen).');
+        return;
+    }
+
     const alunoData = { nome: nome, cpf: cpf, status: status };
     console.log('Dados do aluno a enviar:', alunoData);
 
