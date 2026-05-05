@@ -79,5 +79,5 @@ const API_BASE_URL = 'https://backup-weld.vercel.app';
 
 ## 👥 Autores
 
-Desenvolvido por **Isa Jucá** – sinta-se à vontade para entrar em contato!
+Desenvolvido por **Isa Jucá** e **Rebeca Diniz** – sinta-se à vontade para entrar em contato!
 isadora.juca.senai@gmail.com
